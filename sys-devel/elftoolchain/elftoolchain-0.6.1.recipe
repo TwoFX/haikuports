@@ -7,7 +7,7 @@ larger BSD Toolchain Project, which aims to make the entire C/C++ compilation \
 process which is usually driven by copyleft GNU tools available under a \
 permissive license. Besides the ELF Tool Chain Project, the BSD Toolchain \
 project includes ClangBSD, libc++ and libcxxrt."
-HOMEPAGE="http://sourceforge.net/project/elftoolchain"
+HOMEPAGE="https://sourceforge.net/projects/elftoolchain/"
 COPYRIGHT="2001 Jake Burkholder
 	2003 David O'Brien
 	2006, 2008, 2010-2011 Joseph Koshy
@@ -18,13 +18,13 @@ COPYRIGHT="2001 Jake Burkholder
 	2009, 2010 Kai Wang"
 LICENSE="BSD (2-clause)"
 REVISION="1"
-SOURCE_URI="http://sourceforge.net/projects/elftoolchain/files/Sources/elftoolchain-0.6.1/elftoolchain-0.6.1.tar.bz2"
+SOURCE_URI="http://downloads.sf.net/elftoolchain/elftoolchain-$portVersion.tar.bz2"
 CHECKSUM_SHA256="a3e0c11ed9b0fe2f40b687b11849e7d52cb6675ebc60745c85d37a3ae4272cab"
-PATCHES="elftoolchain-0.6.1.patchset"
+PATCHES="elftoolchain-$portVersion.patchset"
 
 # How borken this recipe is depends on how Haiku ticket #12617 turns out
 ARCHITECTURES="!x86_gcc2 !x86 !x86_64"
-SECONDARY_ARCHITECTURES="x86"
+SECONDARY_ARCHITECTURES="!x86_gcc2 x86"
 
 PROVIDES="
 	elftoolchain$secondaryArchSuffix = $portVersion
@@ -81,11 +81,11 @@ BUILD_PREREQUIRES="
 
 BUILD()
 {
-	bmake
+	CFLAGS="-DBSD_SOURCE -I/system/develop/headers/private/libs/compat/freebsd_network/compat" LDFLAGS="-lbsd" bmake
 }
 
 INSTALL()
 {
 	# TODO
-	sleep 0
+	CFLAGS="-DBSD_SOURCE -I/system/develop/headers/private/libs/compat/freebsd_network/compat" LDFLAGS="-lbsd" bmake install
 }
